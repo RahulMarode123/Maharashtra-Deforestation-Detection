@@ -12,3 +12,7 @@ requirements.txt
     Akola.py
     Yavatmal.py
     Aurangabad.py
+streamlit
+plotly
+pandas
+numpy

@@ -1,3 +1,14 @@
-git add requirements.txt
-git commit -m "Add Streamlit + OpenCV dependencies"
-git push origin main
+app.py
+requirements.txt
+/views
+    login.py
+/screens
+    main.py
+    Cities.py
+    greenery.py
+    Datasets.py
+    Amravati.py
+    Nagpur.py
+    Akola.py
+    Yavatmal.py
+    Aurangabad.py

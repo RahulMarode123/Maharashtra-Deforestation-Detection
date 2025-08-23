@@ -2,9 +2,10 @@ import streamlit as st
 import streamlit.components.v1 as components
 import pandas as pd
 import numpy as np
+import plotly.express as px
 import matplotlib.pyplot as plt
 from components.navbar import navbar
-import plotly.express as px
+
 
 def show_main():
     navbar("main")
@@ -282,4 +283,5 @@ def show_main():
     
     # ✅ Show dataset preview below charts
     st.subheader("📑 Dataset Preview")
+
     st.dataframe(selected_data.head())

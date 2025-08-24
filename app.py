@@ -1,6 +1,7 @@
 import streamlit as st
 from views import login
 from screens import Cities, greenery, main, Datasets, Amravati, Nagpur, Akola, Yavatmal, Aurangabad
+from screens import Login
 
 
 if "logged_in" not in st.session_state:
@@ -38,3 +39,12 @@ else:
     elif st.session_state.page == "Datasets":
 
         Datasets.show_Datasets()
+
+if "logged_in" not in st.session_state:
+    st.session_state["logged_in"] = False
+
+if not st.session_state["logged_in"]:
+    Login.login_page()
+else:
+    st.sidebar.success("✅ Logged in")
+

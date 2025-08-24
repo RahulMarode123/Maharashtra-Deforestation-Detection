@@ -4,51 +4,48 @@ import os
 
 USERS_FILE = "data/users.csv"
 
-# --- Function to load users ---
+# Load users from CSV
 def load_users():
     if os.path.exists(USERS_FILE):
         return pd.read_csv(USERS_FILE)
     else:
         return pd.DataFrame(columns=["username", "password"])
 
-# --- Function to save new user ---
+# Save users to CSV
 def save_user(username, password):
-    users = load_users()
-    if username in users['username'].values:
-        return False  # username already exists
+    df = load_users()
+    if username in df["username"].values:
+        return False  # already exists
     new_user = pd.DataFrame([[username, password]], columns=["username", "password"])
-    users = pd.concat([users, new_user], ignore_index=True)
-    users.to_csv(USERS_FILE, index=False)
+    df = pd.concat([df, new_user], ignore_index=True)
+    df.to_csv(USERS_FILE, index=False)
     return True
 
-# --- Streamlit UI ---
-st.title("🌳 Maharashtra Deforestation Detection - Login Page")
+def login_page():
+    st.title("🔐 Login Page")
 
-menu = ["Login", "Register"]
-choice = st.sidebar.selectbox("Menu", menu)
+    menu = ["Login", "Register"]
+    choice = st.radio("Choose Option", menu)
 
-if choice == "Login":
-    st.subheader("Login Section")
+    if choice == "Login":
+        username = st.text_input("Enter Username:")
+        password = st.text_input("Enter Password:", type="password")
 
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
+        if st.button("Login"):
+            df = load_users()
+            if username in df["username"].values and password in df["password"].values:
+                st.success(f"Welcome {username}!")
+                st.session_state["logged_in"] = True
+            else:
+                st.error("Invalid Username or Password")
 
-    if st.button("Login"):
-        users = load_users()
-        if ((users['username'] == username) & (users['password'] == password)).any():
-            st.success(f"Welcome {username} 👋")
-            st.session_state["logged_in"] = True
-        else:
-            st.error("Invalid Username or Password ❌")
+    elif choice == "Register":
+        st.subheader("Create New Account")
+        new_username = st.text_input("New Username:")
+        new_password = st.text_input("New Password:", type="password")
 
-elif choice == "Register":
-    st.subheader("Create New Account")
-
-    new_user = st.text_input("New Username")
-    new_pass = st.text_input("New Password", type="password")
-
-    if st.button("Register"):
-        if save_user(new_user, new_pass):
-            st.success("✅ Account created successfully! Now go to Login")
-        else:
-            st.warning("⚠️ Username already exists")
+        if st.button("Register"):
+            if save_user(new_username, new_password):
+                st.success("✅ Account created successfully! Please login.")
+            else:
+                st.error("⚠️ Username already exists!")
